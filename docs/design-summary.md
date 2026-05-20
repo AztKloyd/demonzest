@@ -125,8 +125,10 @@ Implemented so far:
 - User creation API
 - Login API
 - JWT access token creation
+- Current-user dependency
+- `GET /api/me`
 
 Next planned step:
 
-- Add current-user dependency.
-- Add `GET /api/me`.
+- Restrict user creation to admins.
+- Add a safer development seed script for the first admin user.
