@@ -1,9 +1,10 @@
-##FastAPIサーバーに必要なPythonパッケージリスト
-
-fastapi ##APIサーバーフレームワーク
-uvicorn[standard] ##FastAPI実行用のASGIサーバー
-pydantic-settings ##環境変数管理用のライブラリ
-sqlalchemy ##ORM（Object-Relational Mapping）ライブラリ
-psycopg[binary] ##PostgreSQLデータベースドライバ
-alembic ##データベースマイグレーションツール
-passlib[bcrypt] ##パスワードハッシュ化ライブラリ
+fastapi
+uvicorn[standard]
+pydantic-settings
+sqlalchemy
+psycopg[binary]
+alembic
+passlib[bcrypt]
+bcrypt==4.0.1
+email-validator
+httpx

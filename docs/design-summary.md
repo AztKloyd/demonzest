@@ -121,9 +121,10 @@ Implemented so far:
 - Alembic setup
 - User SQLAlchemy model
 - Initial users table migration
-- Password hashing helper started
+- Password hashing helper
+- User creation API
 
 Next planned step:
 
-- Complete user creation API and schemas.
-- Then implement login API.
+- Implement login API.
+- Add access token support.
