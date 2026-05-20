@@ -52,7 +52,6 @@ PostgreSQL stores only user-specific learning data:
 - Users
 - Progress
 - Last viewed position
-- Notes
 - Quiz attempts
 - Quiz answers
 - Wrong answers
@@ -142,8 +141,10 @@ Implemented so far:
 - Lesson progress update API
 - Lesson complete API
 - Lesson response progress attachment
+- Courses list API
+- Course detail API
 
 Next planned step:
 
-- Add lesson notes API.
-- Store one note per user and lesson.
+- Add roadmap API.
+- Attach course progress summaries.

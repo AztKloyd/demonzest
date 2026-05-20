@@ -26,6 +26,74 @@ def load_lesson(lesson_id: str) -> dict[str, Any] | None:
     return None
 
 
+def load_all_lesson_metadata() -> list[dict[str, Any]]:
+    lessons: list[dict[str, Any]] = []
+    content_root = get_content_root()
+    for markdown_path in content_root.rglob("*.md"):
+        raw = markdown_path.read_text(encoding="utf-8")
+        metadata, _body = split_frontmatter(raw)
+        if metadata.get("id"):
+            lessons.append(metadata)
+
+    return sorted(
+        lessons,
+        key=lambda lesson: (
+            lesson.get("phase", 0),
+            lesson.get("courseId", ""),
+            lesson.get("order", 0),
+        ),
+    )
+
+
+def load_courses() -> list[dict[str, Any]]:
+    courses: dict[str, dict[str, Any]] = {}
+    for lesson in load_all_lesson_metadata():
+        course_id = lesson["courseId"]
+        course = courses.setdefault(
+            course_id,
+            {
+                "id": course_id,
+                "title": get_course_title(course_id),
+                "phase": lesson["phase"],
+                "lesson_count": 0,
+            },
+        )
+        course["lesson_count"] += 1
+        course["phase"] = min(course["phase"], lesson["phase"])
+
+    return sorted(courses.values(), key=lambda course: (course["phase"], course["id"]))
+
+
+def load_course(course_id: str) -> dict[str, Any] | None:
+    lessons = [
+        lesson
+        for lesson in load_all_lesson_metadata()
+        if lesson.get("courseId") == course_id
+    ]
+    if not lessons:
+        return None
+
+    lessons.sort(key=lambda lesson: lesson.get("order", 0))
+    return {
+        "id": course_id,
+        "title": get_course_title(course_id),
+        "phase": min(lesson["phase"] for lesson in lessons),
+        "lesson_count": len(lessons),
+        "lessons": [
+            {
+                "id": lesson["id"],
+                "title": lesson["title"],
+                "description": lesson.get("description"),
+                "order": lesson["order"],
+                "level": lesson["level"],
+                "estimated_minutes": lesson["estimatedMinutes"],
+                "tags": lesson.get("tags", []),
+            }
+            for lesson in lessons
+        ],
+    }
+
+
 def load_lesson_metadata(lesson_id: str) -> dict[str, Any] | None:
     content_root = get_content_root()
     for markdown_path in content_root.rglob("*.md"):
@@ -34,6 +102,23 @@ def load_lesson_metadata(lesson_id: str) -> dict[str, Any] | None:
         if metadata.get("id") == lesson_id:
             return metadata
     return None
+
+
+def get_course_title(course_id: str) -> str:
+    course_titles = {
+        "web-basics": "Web開発の全体像",
+        "git-github": "Git / GitHub",
+        "javascript": "JavaScript",
+        "typescript": "TypeScript",
+        "react": "React",
+        "api": "API",
+        "sql-db": "SQL / Database",
+        "python-backend": "Python Backend",
+        "java-spring": "Java / Spring",
+        "japan-dev-practice": "日本の開発実務",
+        "certification": "資格 / キャリア",
+    }
+    return course_titles.get(course_id, course_id)
 
 
 def load_lesson_quizzes(lesson_id: str) -> list[dict[str, Any]] | None:
