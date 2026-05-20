@@ -132,8 +132,10 @@ Implemented so far:
 - First Markdown lesson
 - Lesson content loader
 - `GET /api/lessons/{lesson_id}`
+- Quiz submission API
+- Backend-only quiz answer grading
 
 Next planned step:
 
-- Add quiz submission API.
-- Use original Markdown quiz answers only on the backend.
+- Store quiz attempts in PostgreSQL.
+- Store wrong answers for review.

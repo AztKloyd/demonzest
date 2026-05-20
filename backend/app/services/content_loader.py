@@ -26,6 +26,16 @@ def load_lesson(lesson_id: str) -> dict[str, Any] | None:
     return None
 
 
+def load_lesson_quizzes(lesson_id: str) -> list[dict[str, Any]] | None:
+    content_root = get_content_root()
+    for markdown_path in content_root.rglob("*.md"):
+        raw = markdown_path.read_text(encoding="utf-8")
+        metadata, body = split_frontmatter(raw)
+        if metadata.get("id") == lesson_id:
+            return extract_private_quizzes(body)
+    return None
+
+
 def split_frontmatter(raw: str) -> tuple[dict[str, Any], str]:
     match = FRONTMATTER_PATTERN.match(raw)
     if match is None:
@@ -63,5 +73,13 @@ def extract_public_quizzes(body: str) -> list[dict[str, Any]]:
         quiz.pop("sampleAnswer", None)
         quiz.pop("keywords", None)
         quiz.pop("explanation", None)
+        quizzes.append(quiz)
+    return quizzes
+
+
+def extract_private_quizzes(body: str) -> list[dict[str, Any]]:
+    quizzes: list[dict[str, Any]] = []
+    for match in QUIZ_BLOCK_PATTERN.finditer(body):
+        quiz = yaml.safe_load(match.group(1)) or {}
         quizzes.append(quiz)
     return quizzes
