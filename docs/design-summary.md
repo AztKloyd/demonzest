@@ -127,8 +127,10 @@ Implemented so far:
 - JWT access token creation
 - Current-user dependency
 - `GET /api/me`
+- Admin-only user creation
+- First admin seed script
 
 Next planned step:
 
-- Restrict user creation to admins.
-- Add a safer development seed script for the first admin user.
+- Start lesson content API.
+- Add Markdown content parser.
