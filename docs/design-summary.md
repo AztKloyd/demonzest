@@ -134,8 +134,11 @@ Implemented so far:
 - `GET /api/lessons/{lesson_id}`
 - Quiz submission API
 - Backend-only quiz answer grading
+- Quiz attempt persistence
+- Quiz answer persistence
+- Wrong answer tracking
 
 Next planned step:
 
-- Store quiz attempts in PostgreSQL.
-- Store wrong answers for review.
+- Add review API for wrong answers.
+- Start lesson progress tracking.

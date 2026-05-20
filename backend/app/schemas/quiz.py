@@ -26,6 +26,7 @@ class QuizResult(BaseModel):
 
 
 class QuizSubmitResponse(BaseModel):
+    attempt_id: str | None = None
     lesson_id: str
     total_questions: int
     auto_graded_count: int
