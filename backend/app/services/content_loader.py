@@ -26,6 +26,16 @@ def load_lesson(lesson_id: str) -> dict[str, Any] | None:
     return None
 
 
+def load_lesson_metadata(lesson_id: str) -> dict[str, Any] | None:
+    content_root = get_content_root()
+    for markdown_path in content_root.rglob("*.md"):
+        raw = markdown_path.read_text(encoding="utf-8")
+        metadata, _body = split_frontmatter(raw)
+        if metadata.get("id") == lesson_id:
+            return metadata
+    return None
+
+
 def load_lesson_quizzes(lesson_id: str) -> list[dict[str, Any]] | None:
     content_root = get_content_root()
     for markdown_path in content_root.rglob("*.md"):
@@ -33,6 +43,22 @@ def load_lesson_quizzes(lesson_id: str) -> list[dict[str, Any]] | None:
         metadata, body = split_frontmatter(raw)
         if metadata.get("id") == lesson_id:
             return extract_private_quizzes(body)
+    return None
+
+
+def load_lesson_quiz(lesson_id: str, question_id: str) -> dict[str, Any] | None:
+    quizzes = load_lesson_quizzes(lesson_id)
+    if quizzes is None:
+        return None
+
+    for quiz in quizzes:
+        if quiz.get("id") == question_id:
+            public_quiz = dict(quiz)
+            public_quiz.pop("answer", None)
+            public_quiz.pop("sampleAnswer", None)
+            public_quiz.pop("keywords", None)
+            public_quiz.pop("explanation", None)
+            return public_quiz
     return None
 
 

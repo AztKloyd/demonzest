@@ -137,8 +137,9 @@ Implemented so far:
 - Quiz attempt persistence
 - Quiz answer persistence
 - Wrong answer tracking
+- Review wrong answers API
 
 Next planned step:
 
-- Add review API for wrong answers.
 - Start lesson progress tracking.
+- Store last viewed lesson position.
