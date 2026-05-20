@@ -123,8 +123,10 @@ Implemented so far:
 - Initial users table migration
 - Password hashing helper
 - User creation API
+- Login API
+- JWT access token creation
 
 Next planned step:
 
-- Implement login API.
-- Add access token support.
+- Add current-user dependency.
+- Add `GET /api/me`.
