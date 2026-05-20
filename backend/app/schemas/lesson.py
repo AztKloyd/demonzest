@@ -2,6 +2,8 @@ from typing import Any
 
 from pydantic import BaseModel
 
+from app.schemas.progress import LessonProgressResponse
+
 
 class LessonResponse(BaseModel):
     id: str
@@ -15,3 +17,4 @@ class LessonResponse(BaseModel):
     tags: list[str]
     body: str
     quizzes: list[dict[str, Any]]
+    progress: LessonProgressResponse | None = None

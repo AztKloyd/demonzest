@@ -138,8 +138,12 @@ Implemented so far:
 - Quiz answer persistence
 - Wrong answer tracking
 - Review wrong answers API
+- Lesson progress table
+- Lesson progress update API
+- Lesson complete API
+- Lesson response progress attachment
 
 Next planned step:
 
-- Start lesson progress tracking.
-- Store last viewed lesson position.
+- Add lesson notes API.
+- Store one note per user and lesson.

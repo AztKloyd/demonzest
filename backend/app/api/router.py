@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.routes import auth, db_health, health, lessons, me, quiz, review, users
+from app.api.routes import auth, db_health, health, lessons, me, progress, quiz, review, users
 
 
 api_router = APIRouter()
@@ -12,3 +12,4 @@ api_router.include_router(me.router)
 api_router.include_router(lessons.router)
 api_router.include_router(quiz.router)
 api_router.include_router(review.router)
+api_router.include_router(progress.router)

@@ -9,3 +9,9 @@ class QuestionType(str, Enum):
     FILL_BLANK = "fill_blank"
     CODE_OUTPUT = "code_output"
     SHORT_ANSWER = "short_answer"
+
+
+class LessonStatus(str, Enum):
+    NOT_STARTED = "not_started"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
