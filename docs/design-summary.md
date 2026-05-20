@@ -129,8 +129,11 @@ Implemented so far:
 - `GET /api/me`
 - Admin-only user creation
 - First admin seed script
+- First Markdown lesson
+- Lesson content loader
+- `GET /api/lessons/{lesson_id}`
 
 Next planned step:
 
-- Start lesson content API.
-- Add Markdown content parser.
+- Add quiz submission API.
+- Use original Markdown quiz answers only on the backend.

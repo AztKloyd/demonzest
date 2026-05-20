@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     admin_email: str | None = None
     admin_password: str | None = None
     admin_name: str = "Admin"
+    content_dir: str = "../content"
 
     model_config = SettingsConfigDict(env_file=".env")
 
