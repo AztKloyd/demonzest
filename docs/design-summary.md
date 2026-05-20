@@ -143,8 +143,9 @@ Implemented so far:
 - Lesson response progress attachment
 - Courses list API
 - Course detail API
+- Roadmap API
 
 Next planned step:
 
-- Add roadmap API.
 - Attach course progress summaries.
+- Start Angular frontend scaffold.
