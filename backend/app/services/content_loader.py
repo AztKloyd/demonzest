@@ -94,6 +94,23 @@ def load_course(course_id: str) -> dict[str, Any] | None:
     }
 
 
+def load_course_lessons_map() -> dict[str, list[dict[str, Any]]]:
+    lessons_by_course: dict[str, list[dict[str, Any]]] = {}
+    for lesson in load_all_lesson_metadata():
+        course_id = lesson["courseId"]
+        lessons_by_course.setdefault(course_id, []).append(
+            {
+                "id": lesson["id"],
+                "order": lesson["order"],
+            }
+        )
+
+    for lessons in lessons_by_course.values():
+        lessons.sort(key=lambda lesson: lesson["order"])
+
+    return lessons_by_course
+
+
 def load_lesson_metadata(lesson_id: str) -> dict[str, Any] | None:
     content_root = get_content_root()
     for markdown_path in content_root.rglob("*.md"):

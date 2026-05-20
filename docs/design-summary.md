@@ -144,8 +144,10 @@ Implemented so far:
 - Courses list API
 - Course detail API
 - Roadmap API
+- Course progress summaries
+- Roadmap progress summaries
 
 Next planned step:
 
-- Attach course progress summaries.
 - Start Angular frontend scaffold.
+- Connect Angular to FastAPI auth and content APIs.

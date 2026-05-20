@@ -1,6 +1,9 @@
 from collections import defaultdict
 
-from app.services.content_loader import load_courses
+from sqlalchemy.orm import Session
+
+from app.services.content_loader import load_course_lessons_map, load_courses
+from app.services.course_progress_service import attach_courses_progress
 
 
 PHASE_TITLES = {
@@ -18,9 +21,13 @@ PHASE_TITLES = {
 }
 
 
-def load_roadmap() -> dict:
+def load_roadmap(db: Session, user_id: str) -> dict:
+    courses = load_courses()
+    course_lessons = load_course_lessons_map()
+    courses = attach_courses_progress(db, user_id, courses, course_lessons)
+
     courses_by_phase = defaultdict(list)
-    for course in load_courses():
+    for course in courses:
         courses_by_phase[course["phase"]].append(course)
 
     phases = []

@@ -6,6 +6,8 @@ class CourseSummary(BaseModel):
     title: str
     phase: int
     lesson_count: int
+    completed_count: int = 0
+    progress_percent: int = 0
 
 
 class CourseListResponse(BaseModel):
@@ -20,6 +22,8 @@ class CourseLessonSummary(BaseModel):
     level: str
     estimated_minutes: int
     tags: list[str]
+    status: str = "not_started"
+    progress_percent: int = 0
 
 
 class CourseDetailResponse(BaseModel):
@@ -27,4 +31,6 @@ class CourseDetailResponse(BaseModel):
     title: str
     phase: int
     lesson_count: int
+    completed_count: int = 0
+    progress_percent: int = 0
     lessons: list[CourseLessonSummary]
