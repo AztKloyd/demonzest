@@ -19,6 +19,8 @@ export class LessonPage implements OnInit {
   readonly lesson = signal<Lesson | null>(null);
   readonly error = signal('');
   readonly loading = signal(true);
+  readonly completing = signal(false);
+  readonly completeMessage = signal('');
 
   ngOnInit() {
     const token = this.auth.token;
@@ -38,6 +40,34 @@ export class LessonPage implements OnInit {
       error: () => {
         this.error.set('Lesson could not be loaded.');
         this.loading.set(false);
+      },
+    });
+  }
+
+  completeLesson() {
+    const token = this.auth.token;
+    const lesson = this.lesson();
+
+    if (!token || !lesson) {
+      return;
+    }
+
+    this.completing.set(true);
+    this.completeMessage.set('');
+    this.error.set('');
+
+    this.api.completeLesson(token, lesson.id).subscribe({
+      next: (progress) => {
+        this.lesson.set({
+          ...lesson,
+          progress,
+        });
+        this.completing.set(false);
+        this.completeMessage.set('Lesson marked as complete.');
+      },
+      error: () => {
+        this.completing.set(false);
+        this.error.set('Lesson could not be completed.');
       },
     });
   }

@@ -15,6 +15,26 @@
         <span>{{ lesson()?.level }}</span>
         <span>{{ lesson()?.estimated_minutes }} min</span>
         <span>{{ lesson()?.progress?.status || 'not_started' }}</span>
+        <span>{{ lesson()?.progress?.progress_percent || 0 }}%</span>
+      </div>
+
+      <div class="lesson-actions">
+        <button
+          type="button"
+          (click)="completeLesson()"
+          [disabled]="completing() || lesson()?.progress?.status === 'completed'"
+        >
+          @if (completing()) {
+            Completing...
+          } @else if (lesson()?.progress?.status === 'completed') {
+            Completed
+          } @else {
+            Mark complete
+          }
+        </button>
+        @if (completeMessage()) {
+          <p class="complete-message">{{ completeMessage() }}</p>
+        }
       </div>
     </div>
 

@@ -39,6 +39,36 @@ h2 {
   padding: 7px 10px;
 }
 
+.lesson-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+button {
+  min-height: 40px;
+  border: 1px solid #0ea5e9;
+  background: #0ea5e9;
+  color: #04111d;
+  padding: 0 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button:disabled {
+  border-color: #334155;
+  background: #1f2937;
+  color: #94a3b8;
+  cursor: default;
+}
+
+.complete-message {
+  margin: 0;
+  color: #a7f3d0;
+}
+
 .body {
   border: 1px solid #263244;
   background: #111827;

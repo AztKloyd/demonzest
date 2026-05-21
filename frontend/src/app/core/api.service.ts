@@ -1,7 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
-import { CourseDetail, Lesson, LoginResponse, RoadmapResponse, User } from './api.models';
+import {
+  CourseDetail,
+  Lesson,
+  LessonProgress,
+  LoginResponse,
+  RoadmapResponse,
+  User,
+} from './api.models';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -37,6 +44,16 @@ export class ApiService {
     return this.http.get<Lesson>(`${this.apiBaseUrl}/lessons/${lessonId}`, {
       headers: this.authHeaders(token),
     });
+  }
+
+  completeLesson(token: string, lessonId: string) {
+    return this.http.post<LessonProgress>(
+      `${this.apiBaseUrl}/progress/${lessonId}/complete`,
+      {},
+      {
+        headers: this.authHeaders(token),
+      },
+    );
   }
 
   private authHeaders(token: string) {
