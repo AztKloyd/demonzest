@@ -32,7 +32,36 @@ cd demonzest
 
 ### 1. Prepare PostgreSQL
 
-Install PostgreSQL and create a local database:
+Option A: use Docker PostgreSQL:
+
+Install Docker Desktop first, then run:
+
+```powershell
+docker compose up -d db
+```
+
+The Docker database uses:
+
+```text
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_DB=demonzest
+PORT=5432
+```
+
+Stop the database:
+
+```powershell
+docker compose down
+```
+
+Reset the database volume:
+
+```powershell
+docker compose down -v
+```
+
+Option B: install PostgreSQL locally and create a database:
 
 ```sql
 CREATE DATABASE demonzest;
@@ -121,6 +150,37 @@ cd backend
 ```
 
 These tests use a temporary SQLite database and do not touch your local PostgreSQL data.
+
+## Docker
+
+Only PostgreSQL is Dockerized for now. Backend and frontend still run locally.
+
+Install Docker Desktop before using these commands.
+
+Start DB:
+
+```powershell
+docker compose up -d db
+```
+
+Check DB container:
+
+```powershell
+docker compose ps
+```
+
+Stop DB:
+
+```powershell
+docker compose down
+```
+
+Remove DB data and start fresh:
+
+```powershell
+docker compose down -v
+docker compose up -d db
+```
 
 ## Frontend API URL
 

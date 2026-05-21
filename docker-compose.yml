@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16
+    container_name: demonzest-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: demonzest
+    ports:
+      - "5432:5432"
+    volumes:
+      - demonzest_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d demonzest"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  demonzest_pgdata:
