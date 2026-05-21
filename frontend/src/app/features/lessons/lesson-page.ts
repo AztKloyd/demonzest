@@ -166,6 +166,7 @@ export class LessonPage implements OnInit {
         );
         this.loading.set(false);
         this.loadCourseLessons(token, lesson.course_id);
+        this.markInProgress(token, lesson);
       },
       error: () => {
         this.error.set('Lesson could not be loaded.');
@@ -178,6 +179,34 @@ export class LessonPage implements OnInit {
     this.api.course(token, courseId).subscribe({
       next: (course) => this.courseLessons.set(course.lessons),
     });
+  }
+
+  private markInProgress(token: string, lesson: Lesson) {
+    if (lesson.progress?.status === 'completed') {
+      return;
+    }
+
+    const currentPercent = lesson.progress?.progress_percent ?? 0;
+    const progressPercent = Math.max(currentPercent, 10);
+
+    this.api
+      .updateProgress(token, lesson.id, {
+        progress_percent: progressPercent,
+        last_position: 'opened',
+      })
+      .subscribe({
+        next: (progress) => {
+          const currentLesson = this.lesson();
+          if (currentLesson?.id !== lesson.id) {
+            return;
+          }
+
+          this.lesson.set({
+            ...currentLesson,
+            progress,
+          });
+        },
+      });
   }
 
   private parseLessonBody(body: string): LessonBlock[] {

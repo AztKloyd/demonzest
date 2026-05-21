@@ -71,6 +71,11 @@ export interface LessonProgress {
   completed_at: string | null;
 }
 
+export interface LessonProgressUpdateRequest {
+  progress_percent: number;
+  last_position: string | null;
+}
+
 export interface PublicQuiz {
   id: string;
   type: 'fill_blank' | 'code_output' | 'short_answer';

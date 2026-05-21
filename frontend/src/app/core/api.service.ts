@@ -5,6 +5,7 @@ import {
   CourseDetail,
   Lesson,
   LessonProgress,
+  LessonProgressUpdateRequest,
   LoginResponse,
   QuizSubmitRequest,
   QuizSubmitResponse,
@@ -65,6 +66,16 @@ export class ApiService {
     return this.http.post<LessonProgress>(
       `${this.apiBaseUrl}/progress/${lessonId}/complete`,
       {},
+      {
+        headers: this.authHeaders(token),
+      },
+    );
+  }
+
+  updateProgress(token: string, lessonId: string, payload: LessonProgressUpdateRequest) {
+    return this.http.put<LessonProgress>(
+      `${this.apiBaseUrl}/progress/${lessonId}`,
+      payload,
       {
         headers: this.authHeaders(token),
       },
