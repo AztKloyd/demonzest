@@ -4,7 +4,12 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
-import { Lesson, QuizResult, QuizSubmitResponse } from '../../core/api.models';
+import {
+  CourseLessonSummary,
+  Lesson,
+  QuizResult,
+  QuizSubmitResponse,
+} from '../../core/api.models';
 
 type LessonBlock =
   | { type: 'heading'; level: number; text: string }
@@ -33,30 +38,12 @@ export class LessonPage implements OnInit {
   readonly submittingQuiz = signal(false);
   readonly quizError = signal('');
   readonly lessonBlocks = signal<LessonBlock[]>([]);
+  readonly courseLessons = signal<CourseLessonSummary[]>([]);
 
   ngOnInit() {
-    const token = this.auth.token;
-    const lessonId = this.route.snapshot.paramMap.get('lessonId');
-
-    if (!token || !lessonId) {
-      this.loading.set(false);
-      this.error.set('Lesson could not be opened.');
-      return;
-    }
-
-    this.api.lesson(token, lessonId).subscribe({
-      next: (lesson) => {
-        this.lesson.set(lesson);
-        this.lessonBlocks.set(this.parseLessonBody(lesson.body));
-        this.quizAnswers.set(
-          Object.fromEntries(lesson.quizzes.map((quiz) => [quiz.id, ''])),
-        );
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set('Lesson could not be loaded.');
-        this.loading.set(false);
-      },
+    this.route.paramMap.subscribe((params) => {
+      const lessonId = params.get('lessonId');
+      this.loadLesson(lessonId);
     });
   }
 
@@ -128,6 +115,69 @@ export class LessonPage implements OnInit {
 
   resultFor(questionId: string): QuizResult | null {
     return this.quizResult()?.results.find((result) => result.question_id === questionId) ?? null;
+  }
+
+  previousLesson(): CourseLessonSummary | null {
+    const lessons = this.courseLessons();
+    const lessonId = this.lesson()?.id;
+    const index = lessons.findIndex((lesson) => lesson.id === lessonId);
+
+    if (index <= 0) {
+      return null;
+    }
+
+    return lessons[index - 1];
+  }
+
+  nextLesson(): CourseLessonSummary | null {
+    const lessons = this.courseLessons();
+    const lessonId = this.lesson()?.id;
+    const index = lessons.findIndex((lesson) => lesson.id === lessonId);
+
+    if (index === -1 || index >= lessons.length - 1) {
+      return null;
+    }
+
+    return lessons[index + 1];
+  }
+
+  private loadLesson(lessonId: string | null) {
+    const token = this.auth.token;
+
+    this.loading.set(true);
+    this.error.set('');
+    this.completeMessage.set('');
+    this.quizError.set('');
+    this.quizResult.set(null);
+    this.courseLessons.set([]);
+
+    if (!token || !lessonId) {
+      this.loading.set(false);
+      this.error.set('Lesson could not be opened.');
+      return;
+    }
+
+    this.api.lesson(token, lessonId).subscribe({
+      next: (lesson) => {
+        this.lesson.set(lesson);
+        this.lessonBlocks.set(this.parseLessonBody(lesson.body));
+        this.quizAnswers.set(
+          Object.fromEntries(lesson.quizzes.map((quiz) => [quiz.id, ''])),
+        );
+        this.loading.set(false);
+        this.loadCourseLessons(token, lesson.course_id);
+      },
+      error: () => {
+        this.error.set('Lesson could not be loaded.');
+        this.loading.set(false);
+      },
+    });
+  }
+
+  private loadCourseLessons(token: string, courseId: string) {
+    this.api.course(token, courseId).subscribe({
+      next: (course) => this.courseLessons.set(course.lessons),
+    });
   }
 
   private parseLessonBody(body: string): LessonBlock[] {

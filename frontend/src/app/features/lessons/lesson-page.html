@@ -38,6 +38,20 @@
       </div>
     </div>
 
+    <nav class="lesson-nav">
+      @if (previousLesson(); as previous) {
+        <a [routerLink]="['/lessons', previous.id]">Previous: {{ previous.title }}</a>
+      } @else {
+        <span>First lesson</span>
+      }
+
+      @if (nextLesson(); as next) {
+        <a [routerLink]="['/lessons', next.id]">Next: {{ next.title }}</a>
+      } @else {
+        <span>Last lesson</span>
+      }
+    </nav>
+
     <article class="body">
       @for (block of lessonBlocks(); track $index) {
         @if (block.type === 'heading') {
@@ -138,5 +152,19 @@
         <p class="status">No questions yet.</p>
       }
     </section>
+
+    <nav class="lesson-nav bottom">
+      @if (previousLesson(); as previous) {
+        <a [routerLink]="['/lessons', previous.id]">Previous</a>
+      } @else {
+        <span>First lesson</span>
+      }
+
+      @if (nextLesson(); as next) {
+        <a [routerLink]="['/lessons', next.id]">Next lesson</a>
+      } @else {
+        <a routerLink="/roadmap">Back to roadmap</a>
+      }
+    </nav>
   }
 </section>

@@ -69,6 +69,32 @@ button:disabled {
   color: #a7f3d0;
 }
 
+.lesson-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.lesson-nav.bottom {
+  margin: 22px 0 0;
+}
+
+.lesson-nav a,
+.lesson-nav span {
+  min-width: 0;
+  border: 1px solid #334155;
+  background: #111827;
+  color: #e5e7eb;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+.lesson-nav span {
+  color: #64748b;
+}
+
 .body {
   display: grid;
   gap: 14px;
@@ -203,4 +229,11 @@ button:disabled {
 
 .error {
   color: #fca5a5;
+}
+
+@media (max-width: 720px) {
+  .lesson-nav {
+    align-items: stretch;
+    flex-direction: column;
+  }
 }
