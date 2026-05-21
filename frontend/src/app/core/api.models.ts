@@ -8,6 +8,12 @@ export interface User {
   is_active: boolean;
 }
 
+export interface UserProgress extends User {
+  lesson_count: number;
+  completed_count: number;
+  progress_percent: number;
+}
+
 export interface LoginResponse {
   access_token: string;
   token_type: 'bearer';

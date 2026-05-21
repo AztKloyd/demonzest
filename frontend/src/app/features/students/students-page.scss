@@ -75,7 +75,7 @@ button:disabled {
 
 .user-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 100px 100px;
+  grid-template-columns: minmax(0, 1fr) 90px 100px 80px 100px;
   align-items: center;
   gap: 12px;
   border: 1px solid #334155;

@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { ApiService } from '../../core/api.service';
-import { User, UserRole } from '../../core/api.models';
+import { UserProgress, UserRole } from '../../core/api.models';
 import { AuthService } from '../../core/auth.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class StudentsPage implements OnInit {
   private readonly api = inject(ApiService);
   private readonly auth = inject(AuthService);
 
-  readonly users = signal<User[]>([]);
+  readonly users = signal<UserProgress[]>([]);
   readonly loading = signal(true);
   readonly saving = signal(false);
   readonly error = signal('');
@@ -54,7 +54,15 @@ export class StudentsPage implements OnInit {
 
     this.api.createUser(token, form).subscribe({
       next: (user) => {
-        this.users.update((users) => [user, ...users]);
+        this.users.update((users) => [
+          {
+            ...user,
+            lesson_count: users[0]?.lesson_count ?? 0,
+            completed_count: 0,
+            progress_percent: 0,
+          },
+          ...users,
+        ]);
         this.form.set({
           email: '',
           password: '',

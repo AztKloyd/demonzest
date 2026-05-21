@@ -20,3 +20,9 @@ class UserResponse(BaseModel):
     model_config = {
         "from_attributes": True,
     }
+
+
+class UserProgressResponse(UserResponse):
+    lesson_count: int
+    completed_count: int
+    progress_percent: int

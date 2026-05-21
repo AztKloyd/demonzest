@@ -72,6 +72,8 @@
             <small>{{ user.email }}</small>
           </div>
           <span>{{ user.role }}</span>
+          <span>{{ user.completed_count }} / {{ user.lesson_count }}</span>
+          <span>{{ user.progress_percent }}%</span>
           <span>{{ user.is_active ? 'active' : 'inactive' }}</span>
         </div>
       } @empty {

@@ -12,6 +12,7 @@ import {
   RoadmapResponse,
   User,
   UserCreateRequest,
+  UserProgress,
 } from './api.models';
 
 @Injectable({ providedIn: 'root' })
@@ -33,7 +34,7 @@ export class ApiService {
   }
 
   users(token: string) {
-    return this.http.get<User[]>(`${this.apiBaseUrl}/users`, {
+    return this.http.get<UserProgress[]>(`${this.apiBaseUrl}/users`, {
       headers: this.authHeaders(token),
     });
   }
