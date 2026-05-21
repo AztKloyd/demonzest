@@ -6,6 +6,8 @@ import {
   Lesson,
   LessonProgress,
   LoginResponse,
+  QuizSubmitRequest,
+  QuizSubmitResponse,
   RoadmapResponse,
   User,
 } from './api.models';
@@ -50,6 +52,16 @@ export class ApiService {
     return this.http.post<LessonProgress>(
       `${this.apiBaseUrl}/progress/${lessonId}/complete`,
       {},
+      {
+        headers: this.authHeaders(token),
+      },
+    );
+  }
+
+  submitQuiz(token: string, lessonId: string, payload: QuizSubmitRequest) {
+    return this.http.post<QuizSubmitResponse>(
+      `${this.apiBaseUrl}/quiz/${lessonId}/submit`,
+      payload,
       {
         headers: this.authHeaders(token),
       },

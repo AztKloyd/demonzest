@@ -43,11 +43,70 @@
     </article>
 
     <section class="quiz-panel">
-      <h2>Practice questions</h2>
+      <div class="quiz-header">
+        <div>
+          <h2>Practice questions</h2>
+          @if (quizResult()) {
+            <p>
+              Score:
+              @if (quizResult()?.score_percent !== null) {
+                {{ quizResult()?.score_percent }}%
+              } @else {
+                Manual review
+              }
+            </p>
+          }
+        </div>
+        <button type="button" (click)="submitQuiz()" [disabled]="submittingQuiz()">
+          @if (submittingQuiz()) {
+            Submitting...
+          } @else {
+            Submit answers
+          }
+        </button>
+      </div>
+
+      @if (quizError()) {
+        <p class="status error">{{ quizError() }}</p>
+      }
+
       @for (quiz of lesson()?.quizzes; track quiz.id) {
         <div class="quiz">
           <span>{{ quiz.type }}</span>
           <p>{{ quiz.question }}</p>
+          <textarea
+            [ngModel]="quizAnswers()[quiz.id]"
+            (ngModelChange)="setQuizAnswer(quiz.id, $event)"
+            rows="3"
+            placeholder="Type your answer"
+          ></textarea>
+
+          @if (resultFor(quiz.id); as result) {
+            <div
+              class="quiz-result"
+              [class.correct]="result.is_correct === true"
+              [class.incorrect]="result.is_correct === false"
+              [class.manual]="result.is_correct === null"
+            >
+              @if (result.is_correct === true) {
+                <strong>Correct</strong>
+              } @else if (result.is_correct === false) {
+                <strong>Incorrect</strong>
+              } @else {
+                <strong>Sample answer</strong>
+              }
+
+              @if (result.correct_answer) {
+                <p>Correct answer: {{ result.correct_answer }}</p>
+              }
+              @if (result.sample_answer) {
+                <p>{{ result.sample_answer }}</p>
+              }
+              @if (result.explanation) {
+                <p>{{ result.explanation }}</p>
+              }
+            </div>
+          }
         </div>
       } @empty {
         <p class="status">No questions yet.</p>

@@ -70,6 +70,35 @@ export interface PublicQuiz {
   question: string;
 }
 
+export interface QuizAnswerSubmit {
+  question_id: string;
+  answer: string;
+}
+
+export interface QuizSubmitRequest {
+  answers: QuizAnswerSubmit[];
+}
+
+export interface QuizResult {
+  question_id: string;
+  type: PublicQuiz['type'];
+  answer: string;
+  is_correct: boolean | null;
+  correct_answer: string | null;
+  sample_answer: string | null;
+  explanation: string | null;
+}
+
+export interface QuizSubmitResponse {
+  attempt_id: string | null;
+  lesson_id: string;
+  total_questions: number;
+  auto_graded_count: number;
+  correct_count: number;
+  score_percent: number | null;
+  results: QuizResult[];
+}
+
 export interface Lesson {
   id: string;
   course_id: string;

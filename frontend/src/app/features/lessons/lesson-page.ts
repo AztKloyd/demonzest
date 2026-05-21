@@ -1,13 +1,14 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
-import { Lesson } from '../../core/api.models';
+import { Lesson, QuizResult, QuizSubmitResponse } from '../../core/api.models';
 
 @Component({
   selector: 'app-lesson-page',
-  imports: [RouterLink],
+  imports: [FormsModule, RouterLink],
   templateUrl: './lesson-page.html',
   styleUrl: './lesson-page.scss',
 })
@@ -21,6 +22,10 @@ export class LessonPage implements OnInit {
   readonly loading = signal(true);
   readonly completing = signal(false);
   readonly completeMessage = signal('');
+  readonly quizAnswers = signal<Record<string, string>>({});
+  readonly quizResult = signal<QuizSubmitResponse | null>(null);
+  readonly submittingQuiz = signal(false);
+  readonly quizError = signal('');
 
   ngOnInit() {
     const token = this.auth.token;
@@ -35,6 +40,9 @@ export class LessonPage implements OnInit {
     this.api.lesson(token, lessonId).subscribe({
       next: (lesson) => {
         this.lesson.set(lesson);
+        this.quizAnswers.set(
+          Object.fromEntries(lesson.quizzes.map((quiz) => [quiz.id, ''])),
+        );
         this.loading.set(false);
       },
       error: () => {
@@ -70,5 +78,47 @@ export class LessonPage implements OnInit {
         this.error.set('Lesson could not be completed.');
       },
     });
+  }
+
+  setQuizAnswer(questionId: string, answer: string) {
+    this.quizAnswers.update((answers) => ({
+      ...answers,
+      [questionId]: answer,
+    }));
+  }
+
+  submitQuiz() {
+    const token = this.auth.token;
+    const lesson = this.lesson();
+
+    if (!token || !lesson) {
+      return;
+    }
+
+    this.submittingQuiz.set(true);
+    this.quizError.set('');
+    this.quizResult.set(null);
+
+    this.api
+      .submitQuiz(token, lesson.id, {
+        answers: lesson.quizzes.map((quiz) => ({
+          question_id: quiz.id,
+          answer: this.quizAnswers()[quiz.id] ?? '',
+        })),
+      })
+      .subscribe({
+        next: (result) => {
+          this.quizResult.set(result);
+          this.submittingQuiz.set(false);
+        },
+        error: () => {
+          this.quizError.set('Answers could not be submitted.');
+          this.submittingQuiz.set(false);
+        },
+      });
+  }
+
+  resultFor(questionId: string): QuizResult | null {
+    return this.quizResult()?.results.find((result) => result.question_id === questionId) ?? null;
   }
 }
