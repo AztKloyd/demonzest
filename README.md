@@ -21,6 +21,26 @@ This project is split into three main areas:
 - Backend API: `http://127.0.0.1:8000/api`
 - API health check: `http://127.0.0.1:8000/api/health`
 
+## Frontend API URL
+
+Angular reads the API base URL from:
+
+```text
+frontend/src/environments/environment.ts
+```
+
+Default local value:
+
+```ts
+apiBaseUrl: 'http://localhost:8000/api'
+```
+
+For a deployed environment, update:
+
+```text
+frontend/src/environments/environment.prod.ts
+```
+
 ## Start Backend
 
 Open PowerShell:

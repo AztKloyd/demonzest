@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
+import { environment } from '../../environments/environment';
 import {
   CourseDetail,
   Lesson,
@@ -18,7 +19,7 @@ import {
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly apiBaseUrl = 'http://localhost:8000/api';
+  private readonly apiBaseUrl = environment.apiBaseUrl;
 
   login(email: string, password: string) {
     return this.http.post<LoginResponse>(`${this.apiBaseUrl}/auth/login`, {
