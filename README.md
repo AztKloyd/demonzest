@@ -21,6 +21,96 @@ This project is split into three main areas:
 - Backend API: `http://127.0.0.1:8000/api`
 - API health check: `http://127.0.0.1:8000/api/health`
 
+## First Setup On A New PC
+
+Clone the repository:
+
+```powershell
+git clone https://github.com/AztKloyd/demonzest.git
+cd demonzest
+```
+
+### 1. Prepare PostgreSQL
+
+Install PostgreSQL and create a local database:
+
+```sql
+CREATE DATABASE demonzest;
+```
+
+The default local connection example is:
+
+```text
+postgresql+psycopg://postgres:password@localhost:5432/demonzest
+```
+
+Adjust the user, password, host, and database name for your machine.
+
+### 2. Create Backend `.env`
+
+From the project root:
+
+```powershell
+cd backend
+copy .env.example .env
+```
+
+Edit `backend/.env`:
+
+```text
+DATABASE_URL=postgresql+psycopg://postgres:password@localhost:5432/demonzest
+JWT_SECRET_KEY=change-this-secret-key
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=admin-password123
+ADMIN_NAME=Admin
+CONTENT_DIR=../content
+```
+
+Use a private value for `JWT_SECRET_KEY` on your own machine.
+
+### 3. Create Backend Virtual Environment
+
+From `backend/`:
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\pip.exe install -r requirements.txt
+```
+
+If `py` is not available, use:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\pip.exe install -r requirements.txt
+```
+
+### 4. Run Database Migration
+
+From `backend/`:
+
+```powershell
+.\.venv\Scripts\alembic.exe upgrade head
+```
+
+### 5. Seed Admin User
+
+From `backend/`:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\seed_admin.py
+```
+
+### 6. Install Frontend Dependencies
+
+Open another PowerShell from the project root:
+
+```powershell
+cd frontend
+npm.cmd install
+```
+
 ## Frontend API URL
 
 Angular reads the API base URL from:
@@ -46,7 +136,7 @@ frontend/src/environments/environment.prod.ts
 Open PowerShell:
 
 ```powershell
-cd C:\Users\HwangSangyon\Documents\Codex\2026-05-15\new-chat\learning\demonzest\backend
+cd path\to\demonzest\backend
 .\.venv\Scripts\uvicorn.exe app.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
@@ -57,7 +147,7 @@ Keep this terminal open.
 Open another PowerShell:
 
 ```powershell
-cd C:\Users\HwangSangyon\Documents\Codex\2026-05-15\new-chat\learning\demonzest\frontend
+cd path\to\demonzest\frontend
 npm.cmd run start -- --host 127.0.0.1 --port 4200
 ```
 
@@ -78,6 +168,62 @@ If this account does not exist locally, run the admin seed script from `backend/
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\seed_admin.py
+```
+
+## Common Problems
+
+### Backend starts and immediately stops
+
+Run it with reload:
+
+```powershell
+.\.venv\Scripts\uvicorn.exe app.main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+The backend terminal should stay open. If it returns to the PowerShell prompt, the server is not running.
+
+### Login says backend is not reachable
+
+Check that FastAPI is running:
+
+```text
+http://127.0.0.1:8000/api/health
+```
+
+Expected response:
+
+```json
+{"status":"ok","service":"demonzest-api"}
+```
+
+### Database connection fails
+
+Check `backend/.env`:
+
+```text
+DATABASE_URL=postgresql+psycopg://postgres:password@localhost:5432/demonzest
+```
+
+Confirm PostgreSQL is running and the database exists.
+
+### Admin login fails
+
+Run the seed script again:
+
+```powershell
+cd backend
+.\.venv\Scripts\python.exe scripts\seed_admin.py
+```
+
+If the admin already exists with a different password, update the database record or create a different admin email in `.env`.
+
+### PowerShell blocks npm.ps1
+
+Use `npm.cmd` instead of `npm`:
+
+```powershell
+npm.cmd install
+npm.cmd run start -- --host 127.0.0.1 --port 4200
 ```
 
 ## What Works Now
