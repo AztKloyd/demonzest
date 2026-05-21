@@ -2,22 +2,16 @@ from collections import defaultdict
 
 from sqlalchemy.orm import Session
 
-from app.services.content_loader import load_course_lessons_map, load_courses
+from app.services.content_loader import get_course_order, load_course_lessons_map, load_courses
 from app.services.course_progress_service import attach_courses_progress
 
 
 PHASE_TITLES = {
-    1: "Web development overview",
-    2: "Git / GitHub",
-    3: "JavaScript",
-    4: "TypeScript",
-    5: "React",
-    6: "API",
-    7: "SQL / Database",
-    8: "Python Backend",
-    9: "Java / Spring",
-    10: "Japanese development practice",
-    11: "Certifications / Career",
+    1: "Foundation",
+    2: "Frontend and data basics",
+    3: "Backend practice",
+    4: "Japanese development practice",
+    5: "Certifications / Career",
 }
 
 
@@ -38,7 +32,7 @@ def load_roadmap(db: Session, user_id: str) -> dict:
                 "title": PHASE_TITLES.get(phase_id, f"Phase {phase_id}"),
                 "courses": sorted(
                     courses_by_phase[phase_id],
-                    key=lambda course: course["id"],
+                    key=lambda course: get_course_order(course["id"]),
                 ),
             }
         )

@@ -10,6 +10,34 @@ from app.core.config import settings
 FRONTMATTER_PATTERN = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 QUIZ_BLOCK_PATTERN = re.compile(r"```quiz\s*\n(.*?)\n```", re.DOTALL)
 
+COURSE_ORDER = {
+    "web-basics": 10,
+    "git-github": 20,
+    "javascript": 30,
+    "typescript": 40,
+    "react": 50,
+    "api": 60,
+    "sql-db": 70,
+    "python-backend": 80,
+    "java-spring": 90,
+    "japan-dev-practice": 100,
+    "certification": 110,
+}
+
+COURSE_TITLES = {
+    "web-basics": "Web開発の全体像",
+    "git-github": "Git / GitHub",
+    "javascript": "JavaScript",
+    "typescript": "TypeScript",
+    "react": "React",
+    "api": "API",
+    "sql-db": "SQL / Database",
+    "python-backend": "Python Backend",
+    "java-spring": "Java / Spring",
+    "japan-dev-practice": "日本の開発実務",
+    "certification": "資格 / キャリア",
+}
+
 
 def get_content_root() -> Path:
     backend_root = Path(__file__).resolve().parents[2]
@@ -39,7 +67,7 @@ def load_all_lesson_metadata() -> list[dict[str, Any]]:
         lessons,
         key=lambda lesson: (
             lesson.get("phase", 0),
-            lesson.get("courseId", ""),
+            get_course_order(lesson.get("courseId", "")),
             lesson.get("order", 0),
         ),
     )
@@ -61,7 +89,10 @@ def load_courses() -> list[dict[str, Any]]:
         course["lesson_count"] += 1
         course["phase"] = min(course["phase"], lesson["phase"])
 
-    return sorted(courses.values(), key=lambda course: (course["phase"], course["id"]))
+    return sorted(
+        courses.values(),
+        key=lambda course: (course["phase"], get_course_order(course["id"])),
+    )
 
 
 def load_course(course_id: str) -> dict[str, Any] | None:
@@ -122,27 +153,11 @@ def load_lesson_metadata(lesson_id: str) -> dict[str, Any] | None:
 
 
 def get_course_title(course_id: str) -> str:
-    course_titles = {
-        "web-basics": "Web開発の全体像",
-        "git-github": "Git / GitHub",
-        "javascript": "JavaScript",
-        "typescript": "TypeScript",
-        "react": "React",
-        "api": "API",
-        "sql-db": "SQL / Database",
-        "python-backend": "Python Backend",
-        "java-spring": "Java / Spring",
-        "japan-dev-practice": "日本の開発実務",
-        "certification": "資格 / キャリア",
-    }
-    course_titles.update(
-        {
-            "web-basics": "Web開発の全体像",
-            "japan-dev-practice": "日本の開発実務",
-            "certification": "資格 / キャリア",
-        }
-    )
-    return course_titles.get(course_id, course_id)
+    return COURSE_TITLES.get(course_id, course_id)
+
+
+def get_course_order(course_id: str) -> int:
+    return COURSE_ORDER.get(course_id, 999)
 
 
 def load_lesson_quizzes(lesson_id: str) -> list[dict[str, Any]] | None:
