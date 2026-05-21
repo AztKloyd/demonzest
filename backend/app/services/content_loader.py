@@ -135,6 +135,13 @@ def get_course_title(course_id: str) -> str:
         "japan-dev-practice": "日本の開発実務",
         "certification": "資格 / キャリア",
     }
+    course_titles.update(
+        {
+            "web-basics": "Web開発の全体像",
+            "japan-dev-practice": "日本の開発実務",
+            "certification": "資格 / キャリア",
+        }
+    )
     return course_titles.get(course_id, course_id)
 
 

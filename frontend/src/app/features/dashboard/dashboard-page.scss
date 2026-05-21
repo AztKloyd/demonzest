@@ -11,12 +11,76 @@ h1 {
   margin: 0 0 12px;
 }
 
+h2 {
+  margin: 0;
+}
+
 .muted {
   color: #9ca3af;
 }
 
+.error {
+  color: #fca5a5;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.summary div,
+.course {
+  border: 1px solid #334155;
+  background: #111827;
+}
+
+.summary div {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+}
+
+.summary span,
+.course small {
+  color: #9ca3af;
+}
+
+.summary strong {
+  font-size: 28px;
+}
+
+.course-progress {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.course {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 14px;
+  color: #e5e7eb;
+  text-decoration: none;
+}
+
+.course div {
+  display: grid;
+  gap: 4px;
+}
+
+.course span {
+  color: #a7f3d0;
+  font-weight: 800;
+}
+
 .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-top: 24px;
 }
@@ -27,4 +91,10 @@ a {
   padding: 12px 14px;
   text-decoration: none;
   background: #111827;
+}
+
+@media (max-width: 720px) {
+  .summary {
+    grid-template-columns: 1fr;
+  }
 }

@@ -6,6 +6,12 @@ import { ApiService } from '../../core/api.service';
 import { AuthService } from '../../core/auth.service';
 import { Lesson, QuizResult, QuizSubmitResponse } from '../../core/api.models';
 
+type LessonBlock =
+  | { type: 'heading'; level: number; text: string }
+  | { type: 'paragraph'; text: string }
+  | { type: 'list'; items: string[] }
+  | { type: 'code'; text: string };
+
 @Component({
   selector: 'app-lesson-page',
   imports: [FormsModule, RouterLink],
@@ -26,6 +32,7 @@ export class LessonPage implements OnInit {
   readonly quizResult = signal<QuizSubmitResponse | null>(null);
   readonly submittingQuiz = signal(false);
   readonly quizError = signal('');
+  readonly lessonBlocks = signal<LessonBlock[]>([]);
 
   ngOnInit() {
     const token = this.auth.token;
@@ -40,6 +47,7 @@ export class LessonPage implements OnInit {
     this.api.lesson(token, lessonId).subscribe({
       next: (lesson) => {
         this.lesson.set(lesson);
+        this.lessonBlocks.set(this.parseLessonBody(lesson.body));
         this.quizAnswers.set(
           Object.fromEntries(lesson.quizzes.map((quiz) => [quiz.id, ''])),
         );
@@ -120,5 +128,85 @@ export class LessonPage implements OnInit {
 
   resultFor(questionId: string): QuizResult | null {
     return this.quizResult()?.results.find((result) => result.question_id === questionId) ?? null;
+  }
+
+  private parseLessonBody(body: string): LessonBlock[] {
+    const blocks: LessonBlock[] = [];
+    const lines = body.split(/\r?\n/);
+    let paragraph: string[] = [];
+    let list: string[] = [];
+    let code: string[] = [];
+    let inCode = false;
+
+    const flushParagraph = () => {
+      if (paragraph.length > 0) {
+        blocks.push({ type: 'paragraph', text: paragraph.join(' ') });
+        paragraph = [];
+      }
+    };
+
+    const flushList = () => {
+      if (list.length > 0) {
+        blocks.push({ type: 'list', items: list });
+        list = [];
+      }
+    };
+
+    for (const line of lines) {
+      if (line.startsWith('```')) {
+        if (inCode) {
+          blocks.push({ type: 'code', text: code.join('\n') });
+          code = [];
+          inCode = false;
+        } else {
+          flushParagraph();
+          flushList();
+          inCode = true;
+        }
+        continue;
+      }
+
+      if (inCode) {
+        code.push(line);
+        continue;
+      }
+
+      const heading = /^(#{1,3})\s+(.+)$/.exec(line);
+      if (heading) {
+        flushParagraph();
+        flushList();
+        blocks.push({
+          type: 'heading',
+          level: heading[1].length,
+          text: heading[2],
+        });
+        continue;
+      }
+
+      const listItem = /^-\s+(.+)$/.exec(line);
+      if (listItem) {
+        flushParagraph();
+        list.push(listItem[1]);
+        continue;
+      }
+
+      if (line.trim() === '') {
+        flushParagraph();
+        flushList();
+        continue;
+      }
+
+      flushList();
+      paragraph.push(line.trim());
+    }
+
+    flushParagraph();
+    flushList();
+
+    if (code.length > 0) {
+      blocks.push({ type: 'code', text: code.join('\n') });
+    }
+
+    return blocks;
   }
 }

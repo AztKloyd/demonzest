@@ -39,7 +39,25 @@
     </div>
 
     <article class="body">
-      <pre>{{ lesson()?.body }}</pre>
+      @for (block of lessonBlocks(); track $index) {
+        @if (block.type === 'heading') {
+          @if (block.level === 1) {
+            <h2>{{ block.text }}</h2>
+          } @else {
+            <h3>{{ block.text }}</h3>
+          }
+        } @else if (block.type === 'paragraph') {
+          <p>{{ block.text }}</p>
+        } @else if (block.type === 'list') {
+          <ul>
+            @for (item of block.items; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        } @else if (block.type === 'code') {
+          <pre><code>{{ block.text }}</code></pre>
+        }
+      }
     </article>
 
     <section class="quiz-panel">
@@ -74,12 +92,20 @@
         <div class="quiz">
           <span>{{ quiz.type }}</span>
           <p>{{ quiz.question }}</p>
-          <textarea
-            [ngModel]="quizAnswers()[quiz.id]"
-            (ngModelChange)="setQuizAnswer(quiz.id, $event)"
-            rows="3"
-            placeholder="Type your answer"
-          ></textarea>
+          @if (quiz.type === 'fill_blank') {
+            <input
+              [ngModel]="quizAnswers()[quiz.id]"
+              (ngModelChange)="setQuizAnswer(quiz.id, $event)"
+              placeholder="Type a short answer"
+            />
+          } @else {
+            <textarea
+              [ngModel]="quizAnswers()[quiz.id]"
+              (ngModelChange)="setQuizAnswer(quiz.id, $event)"
+              rows="4"
+              placeholder="Type your answer"
+            ></textarea>
+          }
 
           @if (resultFor(quiz.id); as result) {
             <div

@@ -1,7 +1,43 @@
 <section class="page">
   <p class="eyebrow">Dashboard</p>
   <h1>Welcome{{ user() ? ', ' + user()?.name : '' }}</h1>
-  <p class="muted">Backend authentication is connected. Start from the roadmap or open the first lesson.</p>
+  <p class="muted">Your current learning state is shown here. Continue from the roadmap or jump back into the first lesson.</p>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <section class="summary">
+    <div>
+      <span>Overall</span>
+      <strong>{{ overallProgress() }}%</strong>
+    </div>
+    <div>
+      <span>Completed</span>
+      <strong>{{ completedLessons() }} / {{ totalLessons() }}</strong>
+    </div>
+    <div>
+      <span>Courses</span>
+      <strong>{{ courseCount() }}</strong>
+    </div>
+  </section>
+
+  <section class="course-progress">
+    <h2>Course progress</h2>
+    @for (phase of roadmap()?.phases; track phase.id) {
+      @for (course of phase.courses; track course.id) {
+        <a class="course" [routerLink]="['/courses', course.id]">
+          <div>
+            <strong>{{ course.title }}</strong>
+            <small>{{ course.completed_count }} / {{ course.lesson_count }} lessons</small>
+          </div>
+          <span>{{ course.progress_percent }}%</span>
+        </a>
+      }
+    } @empty {
+      <p class="muted">Progress will appear after the roadmap loads.</p>
+    }
+  </section>
 
   <div class="actions">
     <a routerLink="/roadmap">Open Roadmap</a>
