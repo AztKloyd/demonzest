@@ -11,7 +11,9 @@
     <nav>
       <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
       <a routerLink="/roadmap" routerLinkActive="active">Roadmap</a>
-      <a routerLink="/students" routerLinkActive="active">Students</a>
+      @if (isAdmin()) {
+        <a routerLink="/students" routerLinkActive="active">Students</a>
+      }
       <a routerLink="/courses/web-basics" routerLinkActive="active">Web Basics</a>
       <a routerLink="/lessons/web-001" routerLinkActive="active">First Lesson</a>
     </nav>
