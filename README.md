@@ -66,9 +66,11 @@ If this account does not exist locally, run the admin seed script from `backend/
 - Dashboard progress summary
 - Roadmap and course detail pages
 - Lesson reading page with formatted Markdown-like content
+- Previous / next lesson navigation
 - Lesson completion
 - Quiz answer submission and grading result display
 - Wrong answers are recorded by the backend for auto-graded questions
+- Admin-only student account management
 
 ## Adding Lessons
 
