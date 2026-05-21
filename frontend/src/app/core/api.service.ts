@@ -10,6 +10,7 @@ import {
   QuizSubmitResponse,
   RoadmapResponse,
   User,
+  UserCreateRequest,
 } from './api.models';
 
 @Injectable({ providedIn: 'root' })
@@ -26,6 +27,18 @@ export class ApiService {
 
   me(token: string) {
     return this.http.get<User>(`${this.apiBaseUrl}/me`, {
+      headers: this.authHeaders(token),
+    });
+  }
+
+  users(token: string) {
+    return this.http.get<User[]>(`${this.apiBaseUrl}/users`, {
+      headers: this.authHeaders(token),
+    });
+  }
+
+  createUser(token: string, payload: UserCreateRequest) {
+    return this.http.post<User>(`${this.apiBaseUrl}/users`, payload, {
       headers: this.authHeaders(token),
     });
   }

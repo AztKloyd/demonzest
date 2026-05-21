@@ -11,6 +11,14 @@ from app.schemas.user import UserCreate, UserResponse
 router = APIRouter(prefix="/users", tags=["users"])
 
 
+@router.get("", response_model=list[UserResponse])
+def list_users(
+    db: Session = Depends(get_db),
+    _admin: User = Depends(get_current_admin),
+):
+    return db.query(User).order_by(User.created_at.desc()).all()
+
+
 @router.post("", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_user(
     payload: UserCreate,

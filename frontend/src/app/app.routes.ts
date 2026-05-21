@@ -25,6 +25,11 @@ export const routes: Routes = [
           import('./features/roadmap/roadmap-page').then((m) => m.RoadmapPage),
       },
       {
+        path: 'students',
+        loadComponent: () =>
+          import('./features/students/students-page').then((m) => m.StudentsPage),
+      },
+      {
         path: 'courses/:courseId',
         loadComponent: () =>
           import('./features/courses/course-detail-page').then((m) => m.CourseDetailPage),

@@ -1,0 +1,82 @@
+<section class="page">
+  <p class="eyebrow">Students</p>
+  <h1>User management</h1>
+  <p class="muted">Create accounts for learners and confirm who can access demonzest.</p>
+
+  <form class="create-form" (ngSubmit)="createUser()">
+    <label>
+      Name
+      <input
+        [ngModel]="form().name"
+        (ngModelChange)="updateField('name', $event)"
+        name="name"
+        placeholder="Student name"
+      />
+    </label>
+    <label>
+      Email
+      <input
+        [ngModel]="form().email"
+        (ngModelChange)="updateField('email', $event)"
+        name="email"
+        type="email"
+        placeholder="student@example.com"
+      />
+    </label>
+    <label>
+      Password
+      <input
+        [ngModel]="form().password"
+        (ngModelChange)="updateField('password', $event)"
+        name="password"
+        type="password"
+        placeholder="8 characters or more"
+      />
+    </label>
+    <label>
+      Role
+      <select
+        [ngModel]="form().role"
+        (ngModelChange)="updateField('role', $event)"
+        name="role"
+      >
+        <option value="student">student</option>
+        <option value="admin">admin</option>
+      </select>
+    </label>
+    <button type="submit" [disabled]="saving()">
+      @if (saving()) {
+        Creating...
+      } @else {
+        Create user
+      }
+    </button>
+  </form>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+  @if (message()) {
+    <p class="message">{{ message() }}</p>
+  }
+
+  <section class="users">
+    <h2>Accounts</h2>
+    @if (loading()) {
+      <p class="muted">Loading users...</p>
+    } @else {
+      @for (user of users(); track user.id) {
+        <div class="user-row">
+          <div>
+            <strong>{{ user.name }}</strong>
+            <small>{{ user.email }}</small>
+          </div>
+          <span>{{ user.role }}</span>
+          <span>{{ user.is_active ? 'active' : 'inactive' }}</span>
+        </div>
+      } @empty {
+        <p class="muted">No users yet.</p>
+      }
+    }
+  </section>
+</section>

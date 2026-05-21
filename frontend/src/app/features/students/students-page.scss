@@ -1,0 +1,101 @@
+.page {
+  max-width: 980px;
+}
+
+.eyebrow {
+  color: #38bdf8;
+  margin: 0 0 8px;
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+.muted {
+  color: #9ca3af;
+}
+
+.create-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid #263244;
+  background: #111827;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  color: #cbd5e1;
+}
+
+input,
+select,
+button {
+  min-height: 40px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 0 10px;
+  font: inherit;
+}
+
+button {
+  align-self: end;
+  border-color: #0ea5e9;
+  background: #0ea5e9;
+  color: #04111d;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button:disabled {
+  border-color: #334155;
+  background: #1f2937;
+  color: #94a3b8;
+  cursor: default;
+}
+
+.error {
+  color: #fca5a5;
+}
+
+.message {
+  color: #a7f3d0;
+}
+
+.users {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.user-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 100px 100px;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #334155;
+  background: #111827;
+  padding: 12px 14px;
+}
+
+.user-row div {
+  display: grid;
+  gap: 4px;
+}
+
+.user-row small,
+.user-row span {
+  color: #9ca3af;
+}
+
+@media (max-width: 720px) {
+  .create-form,
+  .user-row {
+    grid-template-columns: 1fr;
+  }
+}

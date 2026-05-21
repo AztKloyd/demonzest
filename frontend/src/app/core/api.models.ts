@@ -14,6 +14,13 @@ export interface LoginResponse {
   user: User;
 }
 
+export interface UserCreateRequest {
+  email: string;
+  password: string;
+  name: string;
+  role: UserRole;
+}
+
 export interface CourseSummary {
   id: string;
   title: string;
