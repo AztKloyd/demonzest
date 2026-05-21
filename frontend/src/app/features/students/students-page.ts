@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { ApiService } from '../../core/api.service';
 import { UserProgress, UserRole } from '../../core/api.models';
@@ -72,9 +73,9 @@ export class StudentsPage implements OnInit {
         this.saving.set(false);
         this.message.set('User created.');
       },
-      error: () => {
+      error: (error: unknown) => {
         this.saving.set(false);
-        this.error.set('User could not be created.');
+        this.error.set(this.userCreateErrorMessage(error));
       },
     });
   }
@@ -97,5 +98,25 @@ export class StudentsPage implements OnInit {
         this.loading.set(false);
       },
     });
+  }
+
+  private userCreateErrorMessage(error: unknown): string {
+    if (!(error instanceof HttpErrorResponse)) {
+      return 'User could not be created.';
+    }
+
+    if (error.status === 409) {
+      return 'This email is already registered.';
+    }
+
+    if (error.status === 403) {
+      return 'Admin permission is required.';
+    }
+
+    if (error.status === 422) {
+      return 'Check the email format and use a password with at least 8 characters.';
+    }
+
+    return 'User could not be created.';
   }
 }
