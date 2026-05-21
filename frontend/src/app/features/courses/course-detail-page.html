@@ -1,0 +1,36 @@
+<section class="page">
+  <a class="back" routerLink="/roadmap">Back to roadmap</a>
+
+  @if (loading()) {
+    <p class="status">Loading course...</p>
+  } @else if (error()) {
+    <p class="status error">{{ error() }}</p>
+  } @else if (course()) {
+    <p class="eyebrow">Course</p>
+    <h1>{{ course()?.title }}</h1>
+
+    <div class="summary">
+      <span>Phase {{ course()?.phase }}</span>
+      <span>{{ course()?.completed_count }} / {{ course()?.lesson_count }} completed</span>
+      <span>{{ course()?.progress_percent }}%</span>
+    </div>
+
+    <div class="lesson-list">
+      @for (lesson of course()?.lessons; track lesson.id) {
+        <a class="lesson" [routerLink]="['/lessons', lesson.id]">
+          <div class="order">{{ lesson.order }}</div>
+          <div class="lesson-main">
+            <strong>{{ lesson.title }}</strong>
+            @if (lesson.description) {
+              <p>{{ lesson.description }}</p>
+            }
+            <small>{{ lesson.level }} / {{ lesson.estimated_minutes }} min / {{ lesson.status }}</small>
+          </div>
+          <span class="progress">{{ lesson.progress_percent }}%</span>
+        </a>
+      } @empty {
+        <p class="status">No lessons yet.</p>
+      }
+    </div>
+  }
+</section>

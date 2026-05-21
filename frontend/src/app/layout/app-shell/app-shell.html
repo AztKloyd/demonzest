@@ -1,0 +1,24 @@
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">dz</span>
+      <div>
+        <strong>demonzest</strong>
+        <small>learning console</small>
+      </div>
+    </div>
+
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/roadmap" routerLinkActive="active">Roadmap</a>
+      <a routerLink="/courses/web-basics" routerLinkActive="active">Web Basics</a>
+      <a routerLink="/lessons/web-001" routerLinkActive="active">First Lesson</a>
+    </nav>
+
+    <button type="button" (click)="auth.logout()">Logout</button>
+  </aside>
+
+  <main>
+    <router-outlet />
+  </main>
+</div>

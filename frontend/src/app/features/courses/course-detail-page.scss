@@ -1,0 +1,91 @@
+.page {
+  max-width: 980px;
+}
+
+.back {
+  display: inline-flex;
+  margin-bottom: 22px;
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+.eyebrow {
+  color: #38bdf8;
+  margin: 0 0 8px;
+}
+
+h1 {
+  margin: 0;
+}
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 24px;
+}
+
+.summary span {
+  border: 1px solid #334155;
+  background: #111827;
+  color: #cbd5e1;
+  padding: 8px 10px;
+}
+
+.lesson-list {
+  display: grid;
+  gap: 10px;
+}
+
+.lesson {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 64px;
+  align-items: center;
+  gap: 14px;
+  min-height: 76px;
+  padding: 14px;
+  border: 1px solid #334155;
+  background: #111827;
+  color: #e5e7eb;
+  text-decoration: none;
+}
+
+.order {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #475569;
+  color: #67e8f9;
+  font-weight: 800;
+}
+
+.lesson-main {
+  min-width: 0;
+}
+
+.lesson-main strong,
+.lesson-main small,
+.lesson-main p {
+  display: block;
+}
+
+.lesson-main p {
+  margin: 6px 0;
+  color: #9ca3af;
+}
+
+.lesson-main small,
+.status {
+  color: #9ca3af;
+}
+
+.progress {
+  text-align: right;
+  color: #a7f3d0;
+  font-weight: 700;
+}
+
+.error {
+  color: #fca5a5;
+}

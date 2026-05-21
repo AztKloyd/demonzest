@@ -1,0 +1,22 @@
+<section class="login">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <p class="eyebrow">demonzest</p>
+    <h1>Learning Console</h1>
+
+    <label>
+      Email
+      <input type="email" formControlName="email" />
+    </label>
+
+    <label>
+      Password
+      <input type="password" formControlName="password" />
+    </label>
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <button type="submit">Login</button>
+  </form>
+</section>

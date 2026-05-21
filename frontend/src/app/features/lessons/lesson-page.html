@@ -1,0 +1,37 @@
+<section class="page">
+  @if (lesson()) {
+    <a class="back" [routerLink]="['/courses', lesson()?.course_id]">Back to course</a>
+  }
+
+  @if (loading()) {
+    <p class="status">Loading lesson...</p>
+  } @else if (error()) {
+    <p class="status error">{{ error() }}</p>
+  } @else if (lesson()) {
+    <div class="lesson-header">
+      <p class="eyebrow">Lesson</p>
+      <h1>{{ lesson()?.title }}</h1>
+      <div class="meta">
+        <span>{{ lesson()?.level }}</span>
+        <span>{{ lesson()?.estimated_minutes }} min</span>
+        <span>{{ lesson()?.progress?.status || 'not_started' }}</span>
+      </div>
+    </div>
+
+    <article class="body">
+      <pre>{{ lesson()?.body }}</pre>
+    </article>
+
+    <section class="quiz-panel">
+      <h2>Practice questions</h2>
+      @for (quiz of lesson()?.quizzes; track quiz.id) {
+        <div class="quiz">
+          <span>{{ quiz.type }}</span>
+          <p>{{ quiz.question }}</p>
+        </div>
+      } @empty {
+        <p class="status">No questions yet.</p>
+      }
+    </section>
+  }
+</section>

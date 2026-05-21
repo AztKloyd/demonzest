@@ -1,0 +1,80 @@
+.page {
+  max-width: 980px;
+}
+
+.back {
+  display: inline-flex;
+  margin-bottom: 22px;
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+.eyebrow {
+  color: #38bdf8;
+  margin: 0 0 8px;
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+.lesson-header {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.meta span,
+.quiz span {
+  border: 1px solid #334155;
+  background: #111827;
+  color: #cbd5e1;
+  padding: 7px 10px;
+}
+
+.body {
+  border: 1px solid #263244;
+  background: #111827;
+  padding: 20px;
+}
+
+pre {
+  margin: 0;
+  color: #e5e7eb;
+  font: 15px/1.7 Consolas, 'Courier New', monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.quiz-panel {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.quiz {
+  display: grid;
+  gap: 10px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  padding: 14px;
+}
+
+.quiz p {
+  margin: 0;
+}
+
+.status {
+  color: #9ca3af;
+}
+
+.error {
+  color: #fca5a5;
+}

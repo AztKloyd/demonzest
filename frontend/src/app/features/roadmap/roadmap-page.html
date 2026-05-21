@@ -1,0 +1,36 @@
+<section class="page">
+  <p class="eyebrow">Roadmap</p>
+  <h1>Development learning path</h1>
+  <p class="muted">Courses are grouped by phase so beginners can move from web basics into practical development skills.</p>
+
+  @if (loading()) {
+    <p class="status">Loading roadmap...</p>
+  } @else if (error()) {
+    <p class="status error">{{ error() }}</p>
+  } @else {
+    <div class="phases">
+      @for (phase of roadmap()?.phases; track phase.id) {
+        <section class="phase">
+          <div class="phase-header">
+            <span>Phase {{ phase.id }}</span>
+            <h2>{{ phase.title }}</h2>
+          </div>
+
+          <div class="course-list">
+            @for (course of phase.courses; track course.id) {
+              <a class="course" [routerLink]="['/courses', course.id]">
+                <div>
+                  <strong>{{ course.title }}</strong>
+                  <small>{{ course.lesson_count }} lessons</small>
+                </div>
+                <span class="progress">{{ course.progress_percent }}%</span>
+              </a>
+            } @empty {
+              <p class="status">No courses yet.</p>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  }
+</section>

@@ -1,0 +1,10 @@
+<section class="page">
+  <p class="eyebrow">Dashboard</p>
+  <h1>Welcome{{ user() ? ', ' + user()?.name : '' }}</h1>
+  <p class="muted">Backend authentication is connected. Start from the roadmap or open the first lesson.</p>
+
+  <div class="actions">
+    <a routerLink="/roadmap">Open Roadmap</a>
+    <a routerLink="/lessons/web-001">Continue First Lesson</a>
+  </div>
+</section>
