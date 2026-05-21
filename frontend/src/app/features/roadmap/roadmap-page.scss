@@ -1,10 +1,13 @@
 .page {
-  max-width: 980px;
+  max-width: 1040px;
 }
 
 .eyebrow {
-  color: #38bdf8;
+  color: var(--accent);
   margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 h1,
@@ -15,7 +18,7 @@ h2 {
 .muted,
 .status,
 small {
-  color: #9ca3af;
+  color: var(--muted);
 }
 
 .phases {
@@ -25,8 +28,8 @@ small {
 }
 
 .phase {
-  border: 1px solid #263244;
-  background: #111827;
+  border: 1px solid var(--line);
+  background: var(--panel);
   padding: 18px;
 }
 
@@ -37,7 +40,7 @@ small {
 }
 
 .phase-header span {
-  color: #67e8f9;
+  color: var(--accent);
   font-size: 13px;
   font-weight: 700;
 }
@@ -54,10 +57,15 @@ small {
   gap: 16px;
   min-height: 64px;
   padding: 12px 14px;
-  border: 1px solid #334155;
-  color: #e5e7eb;
+  border: 1px solid var(--line-strong);
+  color: var(--text);
   text-decoration: none;
-  background: #0f172a;
+  background: var(--panel-soft);
+}
+
+.course:hover {
+  border-color: var(--accent);
+  background: var(--panel-raised);
 }
 
 .course div {
@@ -68,10 +76,10 @@ small {
 .progress {
   min-width: 56px;
   text-align: right;
-  color: #a7f3d0;
+  color: var(--success);
   font-weight: 700;
 }
 
 .error {
-  color: #fca5a5;
+  color: var(--danger);
 }

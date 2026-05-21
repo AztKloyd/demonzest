@@ -1,10 +1,13 @@
 .page {
-  max-width: 980px;
+  max-width: 1040px;
 }
 
 .eyebrow {
-  color: #38bdf8;
+  color: var(--accent);
   margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 h1,
@@ -13,7 +16,7 @@ h2 {
 }
 
 .muted {
-  color: #9ca3af;
+  color: var(--muted);
 }
 
 .create-form {
@@ -22,8 +25,8 @@ h2 {
   gap: 12px;
   margin-top: 24px;
   padding: 16px;
-  border: 1px solid #263244;
-  background: #111827;
+  border: 1px solid var(--line);
+  background: var(--panel);
 }
 
 label {
@@ -36,35 +39,35 @@ input,
 select,
 button {
   min-height: 40px;
-  border: 1px solid #334155;
-  background: #0f172a;
-  color: #e5e7eb;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-soft);
+  color: var(--text);
   padding: 0 10px;
   font: inherit;
 }
 
 button {
   align-self: end;
-  border-color: #0ea5e9;
-  background: #0ea5e9;
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
   color: #04111d;
   font-weight: 800;
   cursor: pointer;
 }
 
 button:disabled {
-  border-color: #334155;
+  border-color: var(--line-strong);
   background: #1f2937;
   color: #94a3b8;
   cursor: default;
 }
 
 .error {
-  color: #fca5a5;
+  color: var(--danger);
 }
 
 .message {
-  color: #a7f3d0;
+  color: var(--success);
 }
 
 .users {
@@ -78,8 +81,8 @@ button:disabled {
   grid-template-columns: minmax(0, 1fr) 90px 100px 80px 100px;
   align-items: center;
   gap: 12px;
-  border: 1px solid #334155;
-  background: #111827;
+  border: 1px solid var(--line-strong);
+  background: var(--panel);
   padding: 12px 14px;
 }
 
@@ -90,7 +93,7 @@ button:disabled {
 
 .user-row small,
 .user-row span {
-  color: #9ca3af;
+  color: var(--muted);
 }
 
 @media (max-width: 720px) {
