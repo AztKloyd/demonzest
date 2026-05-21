@@ -111,6 +111,17 @@ cd frontend
 npm.cmd install
 ```
 
+## Run Tests
+
+Backend API smoke tests:
+
+```powershell
+cd backend
+.\.venv\Scripts\pytest.exe
+```
+
+These tests use a temporary SQLite database and do not touch your local PostgreSQL data.
+
 ## Frontend API URL
 
 Angular reads the API base URL from:
@@ -237,6 +248,7 @@ npm.cmd run start -- --host 127.0.0.1 --port 4200
 - Quiz answer submission and grading result display
 - Wrong answers are recorded by the backend for auto-graded questions
 - Admin-only student account management
+- Backend API smoke tests for login, roadmap, lesson, quiz submit, and admin user list
 
 ## Adding Lessons
 
