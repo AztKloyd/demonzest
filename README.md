@@ -46,8 +46,11 @@ The Docker database uses:
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=password
 POSTGRES_DB=demonzest
-PORT=5432
+HOST_PORT=5433
+CONTAINER_PORT=5432
 ```
+
+The host port is `5433` so it does not collide with a local PostgreSQL install that may already be using `5432`.
 
 Stop the database:
 
@@ -87,7 +90,7 @@ copy .env.example .env
 Edit `backend/.env`:
 
 ```text
-DATABASE_URL=postgresql+psycopg://postgres:password@localhost:5432/demonzest
+DATABASE_URL=postgresql+psycopg://postgres:password@localhost:5433/demonzest
 JWT_SECRET_KEY=change-this-secret-key
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=60
@@ -272,7 +275,7 @@ Expected response:
 Check `backend/.env`:
 
 ```text
-DATABASE_URL=postgresql+psycopg://postgres:password@localhost:5432/demonzest
+DATABASE_URL=postgresql+psycopg://postgres:password@localhost:5433/demonzest
 ```
 
 Confirm PostgreSQL is running and the database exists.
