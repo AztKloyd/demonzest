@@ -21,6 +21,7 @@ from app.db.session import get_db
 from app.main import app
 from app.models.enums import UserRole
 from app.models.lesson_progress import LessonProgress
+from app.models.problem_submission import ProblemSubmission
 from app.models.quiz_answer import QuizAnswer
 from app.models.quiz_attempt import QuizAttempt
 from app.models.user import User

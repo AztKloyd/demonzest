@@ -57,7 +57,29 @@
         </div>
 
         <textarea [value]="code()" (input)="updateCode($event)" spellcheck="false"></textarea>
-        <button type="button" disabled>Submit ready later</button>
+        <button type="button" [disabled]="submitting()" (click)="submit()">
+          {{ submitting() ? 'Submitting...' : 'Submit' }}
+        </button>
+        @if (submitMessage()) {
+          <p class="submit-message">{{ submitMessage() }}</p>
+        }
+
+        <section class="submissions">
+          <h2>Submissions</h2>
+          @for (submission of submissions(); track submission.id) {
+            <div class="submission">
+              <div>
+                <strong>{{ submission.status }}</strong>
+                <small>{{ submission.language }} / {{ submission.submitted_at }}</small>
+              </div>
+              @if (submission.feedback) {
+                <p>{{ submission.feedback }}</p>
+              }
+            </div>
+          } @empty {
+            <p class="status">No submissions yet.</p>
+          }
+        </section>
       </aside>
     </div>
   }

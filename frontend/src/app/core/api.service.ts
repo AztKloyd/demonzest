@@ -10,6 +10,9 @@ import {
   LoginResponse,
   ProblemDetail,
   ProblemListResponse,
+  ProblemSubmission,
+  ProblemSubmissionCreateRequest,
+  ProblemSubmissionListResponse,
   QuizSubmitRequest,
   QuizSubmitResponse,
   RoadmapResponse,
@@ -76,6 +79,25 @@ export class ApiService {
     return this.http.get<ProblemDetail>(`${this.apiBaseUrl}/problems/${problemId}`, {
       headers: this.authHeaders(token),
     });
+  }
+
+  problemSubmissions(token: string, problemId: string) {
+    return this.http.get<ProblemSubmissionListResponse>(
+      `${this.apiBaseUrl}/problems/${problemId}/submissions`,
+      {
+        headers: this.authHeaders(token),
+      },
+    );
+  }
+
+  submitProblem(token: string, problemId: string, payload: ProblemSubmissionCreateRequest) {
+    return this.http.post<ProblemSubmission>(
+      `${this.apiBaseUrl}/problems/${problemId}/submissions`,
+      payload,
+      {
+        headers: this.authHeaders(token),
+      },
+    );
   }
 
   completeLesson(token: string, lessonId: string) {

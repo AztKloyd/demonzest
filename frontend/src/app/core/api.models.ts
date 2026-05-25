@@ -157,3 +157,24 @@ export interface ProblemDetail extends ProblemSummary {
   body: string;
   examples: ProblemExample[];
 }
+
+export interface ProblemSubmissionCreateRequest {
+  language: string;
+  code: string;
+}
+
+export interface ProblemSubmission {
+  id: string;
+  problem_id: string;
+  language: string;
+  status: string;
+  score_percent: number | null;
+  runtime_ms: number | null;
+  memory_kb: number | null;
+  feedback: string | null;
+  submitted_at: string;
+}
+
+export interface ProblemSubmissionListResponse {
+  submissions: ProblemSubmission[];
+}

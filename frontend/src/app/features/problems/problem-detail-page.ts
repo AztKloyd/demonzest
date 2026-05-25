@@ -2,7 +2,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { ApiService } from '../../core/api.service';
-import { ProblemDetail } from '../../core/api.models';
+import { ProblemDetail, ProblemSubmission } from '../../core/api.models';
 import { AuthService } from '../../core/auth.service';
 
 @Component({
@@ -21,6 +21,9 @@ export class ProblemDetailPage implements OnInit {
   readonly error = signal('');
   readonly selectedLanguage = signal('JavaScript');
   readonly code = signal('');
+  readonly submissions = signal<ProblemSubmission[]>([]);
+  readonly submitting = signal(false);
+  readonly submitMessage = signal('');
 
   readonly bodyBlocks = computed(() => {
     const body = this.problem()?.body ?? '';
@@ -41,6 +44,7 @@ export class ProblemDetailPage implements OnInit {
         this.problem.set(problem);
         this.code.set(this.defaultCode(problem.title));
         this.loading.set(false);
+        this.loadSubmissions(token, problemId);
       },
       error: () => {
         this.error.set('Problem could not be loaded.');
@@ -54,7 +58,41 @@ export class ProblemDetailPage implements OnInit {
     this.code.set(target.value);
   }
 
+  submit() {
+    const token = this.auth.token;
+    const problemId = this.problem()?.id;
+    if (!token || !problemId || this.submitting()) {
+      return;
+    }
+
+    this.submitting.set(true);
+    this.submitMessage.set('');
+    this.api
+      .submitProblem(token, problemId, {
+        language: this.selectedLanguage(),
+        code: this.code(),
+      })
+      .subscribe({
+        next: (submission) => {
+          this.submissions.set([submission, ...this.submissions()]);
+          this.submitMessage.set('Submission received.');
+          this.submitting.set(false);
+        },
+        error: () => {
+          this.submitMessage.set('Submission failed.');
+          this.submitting.set(false);
+        },
+      });
+  }
+
+  private loadSubmissions(token: string, problemId: string) {
+    this.api.problemSubmissions(token, problemId).subscribe({
+      next: (response) => this.submissions.set(response.submissions),
+      error: () => this.submissions.set([]),
+    });
+  }
+
   private defaultCode(title: string) {
-    return `// ${title}\n// Judge execution will be added in a later step.\n`;
+    return `// ${title}\n// Write your solution here.\n`;
   }
 }
