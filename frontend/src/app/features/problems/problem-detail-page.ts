@@ -19,7 +19,7 @@ export class ProblemDetailPage implements OnInit {
   readonly problem = signal<ProblemDetail | null>(null);
   readonly loading = signal(true);
   readonly error = signal('');
-  readonly selectedLanguage = signal('JavaScript');
+  readonly selectedLanguage = signal('Python');
   readonly code = signal('');
   readonly submissions = signal<ProblemSubmission[]>([]);
   readonly submitting = signal(false);
@@ -75,7 +75,7 @@ export class ProblemDetailPage implements OnInit {
       .subscribe({
         next: (submission) => {
           this.submissions.set([submission, ...this.submissions()]);
-          this.submitMessage.set('Submission received.');
+          this.submitMessage.set(`Submission ${submission.status}.`);
           this.submitting.set(false);
         },
         error: () => {
@@ -93,6 +93,6 @@ export class ProblemDetailPage implements OnInit {
   }
 
   private defaultCode(title: string) {
-    return `// ${title}\n// Write your solution here.\n`;
+    return `# ${title}\n# Write your solution here.\n`;
   }
 }

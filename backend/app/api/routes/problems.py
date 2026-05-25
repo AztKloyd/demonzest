@@ -18,6 +18,7 @@ from app.services.problem_submission_service import (
     list_user_submissions,
     serialize_submission,
 )
+from app.services.sample_judge import judge_sample_cases
 
 
 router = APIRouter(prefix="/problems", tags=["problems"])
@@ -52,7 +53,8 @@ def get_problem_submissions(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    if load_problem(problem_id) is None:
+    problem = load_problem(problem_id)
+    if problem is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Problem not found.",
@@ -71,7 +73,8 @@ def submit_problem(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    if load_problem(problem_id) is None:
+    problem = load_problem(problem_id)
+    if problem is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Problem not found.",
@@ -83,11 +86,21 @@ def submit_problem(
             detail="Code is required.",
         )
 
+    judge_result = judge_sample_cases(
+        language=payload.language,
+        code=payload.code,
+        examples=problem["examples"],
+        time_limit_ms=problem["time_limit_ms"],
+    )
     submission = create_submission(
         db=db,
         user_id=current_user.id,
         problem_id=problem_id,
         language=payload.language,
         code=payload.code,
+        status=judge_result["status"],
+        score_percent=judge_result["score_percent"],
+        runtime_ms=judge_result["runtime_ms"],
+        feedback=judge_result["feedback"],
     )
     return serialize_submission(submission)

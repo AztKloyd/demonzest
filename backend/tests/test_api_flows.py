@@ -67,7 +67,8 @@ def test_problem_submission_is_saved(client: TestClient, admin_headers: dict[str
     payload = submit_response.json()
     assert payload["problem_id"] == "algo-001"
     assert payload["language"] == "Python"
-    assert payload["status"] == "received"
+    assert payload["status"] == "accepted"
+    assert payload["score_percent"] == 100
 
     list_response = client.get(
         "/api/problems/algo-001/submissions",
@@ -83,7 +84,27 @@ def test_problem_submission_is_saved(client: TestClient, admin_headers: dict[str
     problems = problem_list_response.json()["problems"]
     algo_001 = next(problem for problem in problems if problem["id"] == "algo-001")
     assert algo_001["submission_count"] == 1
-    assert algo_001["latest_status"] == "received"
+    assert algo_001["latest_status"] == "accepted"
+
+
+def test_problem_submission_marks_wrong_answer(
+    client: TestClient,
+    admin_headers: dict[str, str],
+):
+    response = client.post(
+        "/api/problems/algo-001/submissions",
+        headers=admin_headers,
+        json={
+            "language": "Python",
+            "code": "print(0)",
+        },
+    )
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["status"] == "wrong_answer"
+    assert payload["score_percent"] == 0
+    assert "Sample 1 failed" in payload["feedback"]
 
 
 def test_quiz_submit_grades_and_records_attempt(

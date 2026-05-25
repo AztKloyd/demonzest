@@ -10,14 +10,20 @@ def create_submission(
     problem_id: str,
     language: str,
     code: str,
+    status: SubmissionStatus = SubmissionStatus.RECEIVED,
+    score_percent: int | None = None,
+    runtime_ms: int | None = None,
+    feedback: str | None = None,
 ) -> ProblemSubmission:
     submission = ProblemSubmission(
         user_id=user_id,
         problem_id=problem_id,
         language=language,
         code=code,
-        status=SubmissionStatus.RECEIVED,
-        feedback="Submission received. Judge execution will be added later.",
+        status=status,
+        score_percent=score_percent,
+        runtime_ms=runtime_ms,
+        feedback=feedback or "Submission received.",
     )
     db.add(submission)
     db.commit()

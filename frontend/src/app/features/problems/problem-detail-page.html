@@ -49,9 +49,9 @@
         <div class="editor-header">
           <label for="language">Language</label>
           <select id="language" [value]="selectedLanguage()" (change)="selectedLanguage.set(($any($event.target)).value)">
+            <option>Python</option>
             <option>JavaScript</option>
             <option>TypeScript</option>
-            <option>Python</option>
             <option>Java</option>
           </select>
         </div>
