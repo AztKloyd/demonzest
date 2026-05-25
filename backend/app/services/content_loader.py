@@ -60,7 +60,7 @@ def load_all_lesson_metadata() -> list[dict[str, Any]]:
     for markdown_path in content_root.rglob("*.md"):
         raw = markdown_path.read_text(encoding="utf-8")
         metadata, _body = split_frontmatter(raw)
-        if metadata.get("id"):
+        if metadata.get("id") and metadata.get("courseId"):
             lessons.append(metadata)
 
     return sorted(

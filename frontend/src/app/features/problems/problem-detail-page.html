@@ -1,0 +1,64 @@
+<section class="page">
+  <a class="back" routerLink="/problems">Back to problems</a>
+
+  @if (loading()) {
+    <p class="status">Loading problem...</p>
+  } @else if (error()) {
+    <p class="status error">{{ error() }}</p>
+  } @else if (problem()) {
+    <header class="header">
+      <div>
+        <p class="eyebrow">Algorithm problem</p>
+        <h1>{{ problem()?.title }}</h1>
+      </div>
+
+      <div class="meta">
+        <span>{{ problem()?.difficulty }}</span>
+        <span>{{ problem()?.time_limit_ms }} ms</span>
+        <span>{{ problem()?.memory_limit_mb }} MB</span>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <article class="statement">
+        @for (block of bodyBlocks(); track block) {
+          <p>{{ block }}</p>
+        }
+
+        <section class="examples">
+          <h2>Examples</h2>
+          @for (example of problem()?.examples; track example.input) {
+            <div class="example">
+              <div>
+                <h3>Input</h3>
+                <pre>{{ example.input }}</pre>
+              </div>
+              <div>
+                <h3>Output</h3>
+                <pre>{{ example.output }}</pre>
+              </div>
+              @if (example.explanation) {
+                <p>{{ example.explanation }}</p>
+              }
+            </div>
+          }
+        </section>
+      </article>
+
+      <aside class="editor">
+        <div class="editor-header">
+          <label for="language">Language</label>
+          <select id="language" [value]="selectedLanguage()" (change)="selectedLanguage.set(($any($event.target)).value)">
+            <option>JavaScript</option>
+            <option>TypeScript</option>
+            <option>Python</option>
+            <option>Java</option>
+          </select>
+        </div>
+
+        <textarea [value]="code()" (input)="updateCode($event)" spellcheck="false"></textarea>
+        <button type="button" disabled>Submit ready later</button>
+      </aside>
+    </div>
+  }
+</section>

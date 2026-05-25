@@ -36,6 +36,23 @@ def test_lesson_returns_body_and_public_quizzes(
     assert "answer" not in payload["quizzes"][0]
 
 
+def test_problem_list_and_detail(client: TestClient, admin_headers: dict[str, str]):
+    list_response = client.get("/api/problems", headers=admin_headers)
+
+    assert list_response.status_code == 200
+    problems = list_response.json()["problems"]
+    assert problems[0]["id"] == "algo-001"
+    assert problems[0]["time_limit_ms"] == 1000
+
+    detail_response = client.get("/api/problems/algo-001", headers=admin_headers)
+
+    assert detail_response.status_code == 200
+    payload = detail_response.json()
+    assert payload["title"] == "A + B"
+    assert payload["body"]
+    assert payload["examples"][0]["input"] == "1 2"
+
+
 def test_quiz_submit_grades_and_records_attempt(
     client: TestClient,
     admin_headers: dict[str, str],

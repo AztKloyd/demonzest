@@ -8,6 +8,8 @@ import {
   LessonProgress,
   LessonProgressUpdateRequest,
   LoginResponse,
+  ProblemDetail,
+  ProblemListResponse,
   QuizSubmitRequest,
   QuizSubmitResponse,
   RoadmapResponse,
@@ -60,6 +62,18 @@ export class ApiService {
 
   lesson(token: string, lessonId: string) {
     return this.http.get<Lesson>(`${this.apiBaseUrl}/lessons/${lessonId}`, {
+      headers: this.authHeaders(token),
+    });
+  }
+
+  problems(token: string) {
+    return this.http.get<ProblemListResponse>(`${this.apiBaseUrl}/problems`, {
+      headers: this.authHeaders(token),
+    });
+  }
+
+  problem(token: string, problemId: string) {
+    return this.http.get<ProblemDetail>(`${this.apiBaseUrl}/problems/${problemId}`, {
       headers: this.authHeaders(token),
     });
   }

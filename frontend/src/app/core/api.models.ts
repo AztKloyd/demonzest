@@ -131,3 +131,29 @@ export interface Lesson {
   quizzes: PublicQuiz[];
   progress: LessonProgress | null;
 }
+
+export interface ProblemSummary {
+  id: string;
+  title: string;
+  difficulty: string;
+  level: string;
+  order: number;
+  tags: string[];
+  time_limit_ms: number;
+  memory_limit_mb: number;
+}
+
+export interface ProblemListResponse {
+  problems: ProblemSummary[];
+}
+
+export interface ProblemExample {
+  input: string;
+  output: string;
+  explanation: string | null;
+}
+
+export interface ProblemDetail extends ProblemSummary {
+  body: string;
+  examples: ProblemExample[];
+}

@@ -30,6 +30,16 @@ export const routes: Routes = [
           import('./features/students/students-page').then((m) => m.StudentsPage),
       },
       {
+        path: 'problems',
+        loadComponent: () =>
+          import('./features/problems/problems-page').then((m) => m.ProblemsPage),
+      },
+      {
+        path: 'problems/:problemId',
+        loadComponent: () =>
+          import('./features/problems/problem-detail-page').then((m) => m.ProblemDetailPage),
+      },
+      {
         path: 'courses/:courseId',
         loadComponent: () =>
           import('./features/courses/course-detail-page').then((m) => m.CourseDetailPage),

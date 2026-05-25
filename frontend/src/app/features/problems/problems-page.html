@@ -1,0 +1,33 @@
+<section class="page">
+  <p class="eyebrow">Problems</p>
+  <h1>Algorithm training</h1>
+  <p class="muted">Small programming problems for input, output, conditions, loops, arrays, and algorithms.</p>
+
+  @if (loading()) {
+    <p class="status">Loading problems...</p>
+  } @else if (error()) {
+    <p class="status error">{{ error() }}</p>
+  } @else {
+    <div class="problem-list">
+      @for (problem of problems(); track problem.id) {
+        <a class="problem" [routerLink]="['/problems', problem.id]">
+          <div class="main">
+            <span class="number">#{{ problem.order }}</span>
+            <div>
+              <strong>{{ problem.title }}</strong>
+              <small>{{ problem.tags.join(' / ') }}</small>
+            </div>
+          </div>
+
+          <div class="meta">
+            <span>{{ problem.difficulty }}</span>
+            <span>{{ problem.time_limit_ms }} ms</span>
+            <span>{{ problem.memory_limit_mb }} MB</span>
+          </div>
+        </a>
+      } @empty {
+        <p class="status">No problems yet.</p>
+      }
+    </div>
+  }
+</section>
