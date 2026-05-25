@@ -16,6 +16,9 @@ class ProblemSummary(BaseModel):
     tags: list[str]
     time_limit_ms: int
     memory_limit_mb: int
+    submission_count: int = 0
+    latest_status: str | None = None
+    last_submitted_at: str | None = None
 
 
 class ProblemListResponse(BaseModel):

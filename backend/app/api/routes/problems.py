@@ -13,6 +13,7 @@ from app.schemas.problem import (
 )
 from app.services.problem_loader import load_problem, load_problem_summaries
 from app.services.problem_submission_service import (
+    attach_submission_stats,
     create_submission,
     list_user_submissions,
     serialize_submission,
@@ -23,8 +24,12 @@ router = APIRouter(prefix="/problems", tags=["problems"])
 
 
 @router.get("", response_model=ProblemListResponse)
-def get_problems(current_user: User = Depends(get_current_user)):
-    return ProblemListResponse(problems=load_problem_summaries())
+def get_problems(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    problems = attach_submission_stats(db, current_user.id, load_problem_summaries())
+    return ProblemListResponse(problems=problems)
 
 
 @router.get("/{problem_id}", response_model=ProblemDetailResponse)

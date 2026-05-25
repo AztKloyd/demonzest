@@ -17,12 +17,58 @@ def create_submission(
         language=language,
         code=code,
         status=SubmissionStatus.RECEIVED,
-        feedback="提出を受け付けました。採点エンジンは次のステップで追加します。",
+        feedback="Submission received. Judge execution will be added later.",
     )
     db.add(submission)
     db.commit()
     db.refresh(submission)
     return submission
+
+
+def attach_submission_stats(
+    db: Session,
+    user_id: str,
+    problems: list[dict[str, object]],
+) -> list[dict[str, object]]:
+    problem_ids = [str(problem["id"]) for problem in problems]
+    if not problem_ids:
+        return problems
+
+    submissions = (
+        db.query(ProblemSubmission)
+        .filter(
+            ProblemSubmission.user_id == user_id,
+            ProblemSubmission.problem_id.in_(problem_ids),
+        )
+        .order_by(ProblemSubmission.submitted_at.desc())
+        .all()
+    )
+
+    stats: dict[str, dict[str, object]] = {}
+    for submission in submissions:
+        problem_stats = stats.setdefault(
+            submission.problem_id,
+            {
+                "submission_count": 0,
+                "latest_status": submission.status.value,
+                "last_submitted_at": submission.submitted_at.isoformat(),
+            },
+        )
+        problem_stats["submission_count"] = int(problem_stats["submission_count"]) + 1
+
+    for problem in problems:
+        problem.update(
+            stats.get(
+                str(problem["id"]),
+                {
+                    "submission_count": 0,
+                    "latest_status": None,
+                    "last_submitted_at": None,
+                },
+            )
+        )
+
+    return problems
 
 
 def list_user_submissions(

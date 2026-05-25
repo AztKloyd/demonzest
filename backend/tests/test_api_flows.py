@@ -79,6 +79,12 @@ def test_problem_submission_is_saved(client: TestClient, admin_headers: dict[str
     assert len(submissions) == 1
     assert submissions[0]["id"] == payload["id"]
 
+    problem_list_response = client.get("/api/problems", headers=admin_headers)
+    problems = problem_list_response.json()["problems"]
+    algo_001 = next(problem for problem in problems if problem["id"] == "algo-001")
+    assert algo_001["submission_count"] == 1
+    assert algo_001["latest_status"] == "received"
+
 
 def test_quiz_submit_grades_and_records_attempt(
     client: TestClient,

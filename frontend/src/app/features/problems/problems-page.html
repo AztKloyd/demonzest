@@ -20,6 +20,12 @@
           </div>
 
           <div class="meta">
+            @if (problem.latest_status) {
+              <span class="submitted">{{ problem.latest_status }}</span>
+              <span>{{ problem.submission_count }} submissions</span>
+            } @else {
+              <span>not submitted</span>
+            }
             <span>{{ problem.difficulty }}</span>
             <span>{{ problem.time_limit_ms }} ms</span>
             <span>{{ problem.memory_limit_mb }} MB</span>

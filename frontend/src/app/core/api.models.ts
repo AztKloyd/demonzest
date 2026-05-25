@@ -141,6 +141,9 @@ export interface ProblemSummary {
   tags: string[];
   time_limit_ms: number;
   memory_limit_mb: number;
+  submission_count: number;
+  latest_status: string | null;
+  last_submitted_at: string | null;
 }
 
 export interface ProblemListResponse {

@@ -75,6 +75,11 @@ small {
   font-size: 12px;
 }
 
+.meta .submitted {
+  border-color: rgba(34, 197, 94, 0.45);
+  color: var(--success);
+}
+
 .error {
   color: var(--danger);
 }
